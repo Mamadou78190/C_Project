@@ -27,6 +27,7 @@ static int world[WORLDWIDTH][WORLDHEIGHT];
 static int nextstates[WORLDWIDTH][WORLDHEIGHT];
 
 /* functions to write for Part B of lab */
+// This function allow us to load and initialize the world from a file enter by the filename
 void initialize_world_from_file(const char * filename) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
@@ -53,6 +54,7 @@ void initialize_world_from_file(const char * filename) {
     memset(nextstates, DEAD, sizeof(nextstates));
 }
 
+// This method allow us to save the world in our files
 void save_world_to_file(const char * filename) {
     FILE *file = fopen(filename, "w");
     if (file == NULL) {
@@ -127,6 +129,7 @@ void finalize_evolution(void) {
 	}
 }
 
+// This method allow us to show the world in our console
 void output_world(void) {
 	char worldstr[2*WORLDWIDTH+2];
 	int i, j;

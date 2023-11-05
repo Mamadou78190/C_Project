@@ -34,14 +34,16 @@ int num_neighbors(int x, int y);
 
 int main(int argc, char ** argv)
 {
-    char filename[256];  // Supposons que le nom du fichier ne dépasse pas 256 caractères
+    char filename[256];  // We suppose that the filename is under 256 character
 
     int file_exists = 0;
     while (!file_exists) {
+        // We add only the filename, without the extension
         printf("Enter the file name (without extension) : ");
         scanf("%s", filename);
-        //strcat(filename, ".txt");
+        strcat(filename, ".txt");
 
+        // We check if the file exist
         if (access(filename, F_OK) != -1) {
             file_exists = 1;
         } else {
@@ -49,10 +51,10 @@ int main(int argc, char ** argv)
         }
     }
 
-    // Charge l'état initial du monde à partir du fichier spécifié
+    // Load the initial state of the world with the file
     initialize_world_from_file(filename);
 
-    // Définissez le nombre de générations souhaité ou utilisez la valeur par défaut
+    // Here, we select the number of generation enter by the user
     int num_generations = NUM_GENERATIONS;
 
     printf("Entrez le nombre de générations (appuyez sur Entrée pour utiliser la valeur par défaut) : ");
@@ -63,16 +65,17 @@ int main(int argc, char ** argv)
 
     for (int n = 0; n < num_generations; n++) {
         next_generation();
-        // Facultatif : Visualisez le monde à chaque génération
+        // Optional : in the console we can see the world
         output_world();
     }
 
-    // Sauvegardez l'état final du monde dans un fichier "world.txt"
+    // We save the final state of the world in this file : "world.txt"
     save_world_to_file("world.txt");
 
     return 0;
 }
 
+// This method allow us to update the world when we change generation
 void next_generation(void) {
     int x, y;
     for (x = 0; x < get_world_width(); x++) {
@@ -84,6 +87,7 @@ void next_generation(void) {
     finalize_evolution();
 }
 
+// This method allow us to see which cell is alive or dead
 int get_next_state(int x, int y) {
     int current_state = get_cell_state(x, y);
     int alive_neighbors = num_neighbors(x, y);
@@ -103,6 +107,7 @@ int get_next_state(int x, int y) {
     }
 }
 
+// This method give us the number of neighbors around a cell
 int num_neighbors(int x, int y) {
     int alive_count = 0;
     for (int i = -1; i <= 1; i++) {
